@@ -1,3 +1,9 @@
+const enableSensorData = require('./enable');
+const disableSensorData = require('./disable');
+const addReading = require('../api/add-reading');
+
+const ENABLE_WAIT_TIME = 1500;
+
 const readHumidity = (sensorTag) => {
   return new Promise((resolve, reject) => {
     sensorTag.readHumidity((err, temperature, humidity) => {
@@ -43,10 +49,43 @@ const readBatteryLevel = (sensorTag) => {
   })
 };
 
+const readData = async (sensorTag) => {
+  const [hum, press, lux, battery] = await Promise.all([
+    readSensorData.readHumidity(sensorTag),
+    readSensorData.readBarometricPressure(sensorTag),
+    readSensorData.readLuxometer(sensorTag),
+    readSensorData.readBatteryLevel(sensorTag)
+  ]);
+
+  return {
+    ...hum,
+    ...press,
+    ...lux,
+    ...battery
+  };
+};
+
+const readAll = async (sensorTag) => {
+  await enableSensorData.enableAll(sensorTag);
+
+  setTimeout(async ()=> {
+    const data = await readData(sensorTag);
+    await addReading(sensorTag.id, {
+      temperature: data.temperature,
+      humidity: data.humidity,
+      pressure: data.pressure,
+      lux: data.lux,
+      battery: data.batteryLevel
+    });
+
+    await disableSensorData.disableAll(sensorTag);
+  }, ENABLE_WAIT_TIME);
+};
 
 module.exports = {
   readHumidity,
   readBarometricPressure,
   readLuxometer,
-  readBatteryLevel
+  readBatteryLevel,
+  readAll
 };

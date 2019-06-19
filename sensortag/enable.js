@@ -25,9 +25,17 @@ const enableLuxometer = (sensorTag) => {
   })
 };
 
+const enableAll = async (sensorTag) => {
+  return await Promise.all([
+    enableSensorData.enableHumidity(sensorTag),
+    enableSensorData.enableBarometricPressure(sensorTag),
+    enableSensorData.enableLuxometer(sensorTag)
+  ]);
+};
 
 module.exports = {
   enableHumidity,
   enableBarometricPressure,
-  enableLuxometer
+  enableLuxometer,
+  enableAll
 };

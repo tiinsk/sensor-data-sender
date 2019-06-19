@@ -1,10 +1,14 @@
 module.exports = {
   api: {
-    secret: 'change-this-to-something-secure',
-    route: 'https://insert-api-here.route.com/api/'
+    secret: 'insert-api-secret-here',
+    route: 'https://some-api.com/api/'
   },
-  device_id: 'device-id-1234',
+  devices: {
+    sensorTag: 'sensor-tag-id',
+    sensorBug: 'sensor-bug-id'
+  },
   api_keys: {
-    'device-id-1234': 'insert-api-key-here'
+    'sensor-tag-id': 'sensor-tag-api-key',
+    'sensor-bug-id': 'sensor-bug-api-key'
   }
 };

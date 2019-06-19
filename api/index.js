@@ -3,7 +3,7 @@ const axios = require('axios');
 const jwt = require('jsonwebtoken');
 
 const instance = axios.create({
-  baseURL: apiConfig.route
+  baseURL: config.api.route
 });
 
 const post = async (params) => {
@@ -22,7 +22,7 @@ const post = async (params) => {
     });
     return response.data;
   } catch (error) {
-    console.error(error);
+    console.error(error, `(at: ${new Date()})`);
   }
 };
 

@@ -25,9 +25,17 @@ const disableLuxometer = (sensorTag) => {
   })
 };
 
+const disableAll = (sensorTag) => {
+  return Promise.all([
+    disableSensorData.disableHumidity(sensorTag),
+    disableSensorData.disableBarometricPressure(sensorTag),
+    disableSensorData.disableLuxometer(sensorTag)
+  ]);
+};
 
 module.exports = {
   disableHumidity,
   disableBarometricPressure,
-  disableLuxometer
+  disableLuxometer,
+  disableAll
 };
