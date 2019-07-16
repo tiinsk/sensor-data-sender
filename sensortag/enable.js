@@ -27,9 +27,9 @@ const enableLuxometer = (sensorTag) => {
 
 const enableAll = async (sensorTag) => {
   return await Promise.all([
-    enableSensorData.enableHumidity(sensorTag),
-    enableSensorData.enableBarometricPressure(sensorTag),
-    enableSensorData.enableLuxometer(sensorTag)
+    enableHumidity(sensorTag),
+    enableBarometricPressure(sensorTag),
+    enableLuxometer(sensorTag)
   ]);
 };
 

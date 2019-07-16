@@ -51,10 +51,10 @@ const readBatteryLevel = (sensorTag) => {
 
 const readData = async (sensorTag) => {
   const [hum, press, lux, battery] = await Promise.all([
-    readSensorData.readHumidity(sensorTag),
-    readSensorData.readBarometricPressure(sensorTag),
-    readSensorData.readLuxometer(sensorTag),
-    readSensorData.readBatteryLevel(sensorTag)
+    readHumidity(sensorTag),
+    readBarometricPressure(sensorTag),
+    readLuxometer(sensorTag),
+    readBatteryLevel(sensorTag)
   ]);
 
   return {
@@ -68,18 +68,29 @@ const readData = async (sensorTag) => {
 const readAll = async (sensorTag) => {
   await enableSensorData.enableAll(sensorTag);
 
-  setTimeout(async ()=> {
-    const data = await readData(sensorTag);
-    await addReading(sensorTag.id, {
-      temperature: data.temperature,
-      humidity: data.humidity,
-      pressure: data.pressure,
-      lux: data.lux,
-      battery: data.batteryLevel
-    });
+  return new Promise((resolve, reject) => {
 
-    await disableSensorData.disableAll(sensorTag);
-  }, ENABLE_WAIT_TIME);
+    setTimeout(async () => {
+      try {
+        const data = await readData(sensorTag);
+        await addReading(sensorTag.id, {
+          temperature: data.temperature,
+          humidity: data.humidity,
+          pressure: data.pressure,
+          lux: data.lux,
+          battery: data.batteryLevel
+        });
+
+        await disableSensorData.disableAll(sensorTag);
+        resolve();
+
+      } catch (e) {
+        reject(e);
+      }
+
+
+    }, ENABLE_WAIT_TIME);
+  });
 };
 
 module.exports = {
