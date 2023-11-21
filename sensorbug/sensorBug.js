@@ -1,4 +1,4 @@
-const NobleDevice = require('noble-device');
+const NobleDevice = require('../lib/noble-device');
 
 const BLUE_RADIOS_CID = 0x0085;
 const STATIC_DATA_TEMPLATE_ID = 0x3c;

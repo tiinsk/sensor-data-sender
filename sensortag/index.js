@@ -11,6 +11,7 @@ const discover = () => {
 
       sensorTag.on('disconnect', function () {
         console.log("Disconnected from device:", sensorTag.id, `(at: ${new Date()})`);
+        process.exit(0);
       });
 
       sensorTag.connectAndSetUp(async function (error) {
