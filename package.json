@@ -9,9 +9,9 @@
   "author": "Tiina Koskiranta",
   "license": "ISC",
   "dependencies": {
-    "@abandonware/noble": "^1.9.2-14",
-    "axios": "^0.18.0",
-    "forever": "^1.0.0",
-    "jsonwebtoken": "^8.5.1"
+    "@abandonware/noble": "^1.9.2-23",
+    "axios": "^1.6.2",
+    "forever": "^4.0.3",
+    "jsonwebtoken": "^9.0.2"
   }
 }

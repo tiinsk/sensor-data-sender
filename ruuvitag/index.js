@@ -1,30 +1,26 @@
-const RuuviTag = require('./ruuviTag');
-const readRuuviTag = require('./read');
-const ruuviTagIds = require('../config').devices.ruuviTags;
+const parseData = require("./parse");
+const addReading = require('../api/add-reading');
 
-const discoverAndRead = async (showLog) => {
-  return new Promise((resolve, reject) => {
-    ruuviTagIds.forEach(id => {
-      try {
-        RuuviTag.discoverById(id, async (ruuviTag) => {
-          if (showLog) {
-            console.log("Connecting to ruuvitag:", ruuviTag.id, `(at: ${new Date()})`);
-          }
-          try {
-            await readRuuviTag.readAll(ruuviTag);
-            resolve();
-          } catch (e) {
-            console.log("Ruuvitag error:", e);
-            reject(e);
-          }
-        });
-      } catch (e) {
-        console.log("Ruuvitag discover error: ", e);
-      }
-    })
-  });
-};
+const readManuData = async (peripheral, showLog = false) => {
+  const manuData = peripheral.advertisement.manufacturerData;
+  //Slice off manufacturer data (9904: Manufacturer: Ruuvi Innovations, least Significant byte first)
+  const parsedData = parseData(manuData.slice(2));
+
+  try {
+    if(showLog) {
+      console.log("Connected to ruuvitag: ", peripheral.id, ` (at: ${new Date()})`);
+    }
+    await addReading(peripheral.uuid, {
+      temperature: parsedData.temperature,
+      humidity: parsedData.humidity,
+      pressure: parsedData.pressure,
+      battery: parsedData.batteryVoltage
+    });
+  } catch (e) {
+    console.log(e);
+  }
+}
 
 module.exports = {
-  discoverAndRead
+  readManuData,
 };
