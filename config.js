@@ -1,14 +1,9 @@
 module.exports = {
+  interval: 600000, // =10min
+  timeout: 20000, // =20sec
   api: {
-    secret: 'insert-api-secret-here',
-    route: 'https://some-api.com/api/'
+    secret: 'INSERT-SECRET-HERE',
+    route: 'http://INSERT-API-ADDRESS-HERE/api/'
   },
-  devices: {
-    sensorTag: 'sensor-tag-id',
-    sensorBug: 'sensor-bug-id'
-  },
-  api_keys: {
-    'sensor-tag-id': 'sensor-tag-api-key',
-    'sensor-bug-id': 'sensor-bug-api-key'
-  }
+  api_key: 'INSERT-API-KEY-HERE',
 };
