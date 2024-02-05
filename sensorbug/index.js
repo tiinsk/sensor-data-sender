@@ -1,29 +1,23 @@
-const SensorBug = require('./sensorBug');
-const readSensorBug = require('./read');
-const sensorBugId = require('../config').devices.sensorBug;
+const { parseData } = require('./parse');
+const addReading = require('../api/add-reading');
 
-const discoverAndRead = async (showLog) => {
-  return new Promise((resolve, reject) => {
-    try {
-      SensorBug.discoverById(sensorBugId, async (sensorBug) => {
-        if (showLog) {
-          console.log("Connecting to sensorbug:", sensorBug.id, `(at: ${new Date()})`);
-        }
-        try {
-          await readSensorBug.readAll(sensorBug);
-          resolve();
-        } catch (e) {
-          console.log("SensorBug Error: ", e);
-          SensorBug.removeAllListeners()
-          reject(e);
-        }
-      });
-    } catch (e) {
-      console.log("SensorBug discover error:", e);
+const readManuData = async (peripheral, showLog = false) => {
+  const manuData = peripheral.advertisement.manufacturerData;
+  const parsedData = parseData(manuData);
+
+  try {
+    if(showLog) {
+      console.log("Connected to sensorbug: ", peripheral.id, ` (at: ${new Date()})`);
     }
-  });
-};
+    await addReading(peripheral.uuid, {
+      temperature: parsedData.temperature,
+      battery: parsedData.batteryVoltage
+    });
+  } catch (e) {
+    console.log(e);
+  }
+}
 
 module.exports = {
-  discoverAndRead
+  readManuData,
 };
