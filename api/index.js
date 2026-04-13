@@ -12,11 +12,10 @@ const post = async (params) => {
       method: 'post',
       url: params.route,
       headers: {
-        authorization: jwt.sign({
-          device: params.deviceId,
+        Authorization: `Bearer ${jwt.sign({
           iat: Date.now(),
-          api_key: config.api_key,
-        }, config.api.secret),
+          apiKey: config.api_key,
+        }, config.api.secret)}`,
       },
       data: params.payload
     });
@@ -32,10 +31,10 @@ const get = async (params) => {
       method: 'GET',
       url: params.route,
       headers: {
-        authorization: jwt.sign({
+        Authorization: `Bearer ${jwt.sign({
           iat: Date.now(),
-          api_key: config.api_key,
-        }, config.api.secret),
+          apiKey: config.api_key,
+        }, config.api.secret)}`,
       },
       data: params.payload,
     });
