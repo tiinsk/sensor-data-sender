@@ -1,6 +1,7 @@
 const noble = require('@abandonware/noble');
 
 const ruuviTag = require('./ruuvitag');
+const ruuviAir = require('./ruuvi-air');
 const sensorbug = require('./sensorbug');
 const config = require('./config');
 const getAllDevices = require('./api/get-all-devices');
@@ -26,6 +27,9 @@ const scanDevices = async (showLog) => {
         }
         else if(device.type === 'ruuvi') {
           ruuviTag.readManuData(peripheral, showLog);
+        }
+        else if(device.type === 'ruuvi-air') {
+          ruuviAir.readManuData(peripheral, showLog);
         }
         devices = devices.filter(d => d.id !== peripheral.uuid);
       }
