@@ -3,7 +3,7 @@ const noble = require('@abandonware/noble');
 const ruuviTag = require('./ruuvitag');
 const ruuviAir = require('./ruuvi-air');
 const sensorbug = require('./sensorbug');
-const config = require('./config');
+const env = require('./env');
 const getAllDevices = require('./api/get-all-devices');
 
 const scanDevices = async (showLog) => {
@@ -45,7 +45,7 @@ const scanDevices = async (showLog) => {
     noble.on('discover', onDiscover);
     discoverTimeout = setTimeout(() => {
       stopDiscovering();
-    }, config.timeout);
+    }, env.timeout);
   }
 }
 
@@ -55,7 +55,7 @@ const main = async () => {
 
   setInterval(() => {
     scanDevices();
-  }, config.interval);
+  }, env.interval);
 }
 
 try {
